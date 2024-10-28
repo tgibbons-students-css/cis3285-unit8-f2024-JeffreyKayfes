@@ -21,6 +21,11 @@ namespace SingleResponsibilityPrinciple
                 string line;
                 while ((line = reader.ReadLine()) != null)
                 {
+                    // Remove BOM character if present at the start of the first line
+                    if (lines.Count == 0 && line.StartsWith("﻿"))
+                    {
+                        line = line.Substring(1);
+                    }
                     lines.Add(line);
                 }
             }
@@ -128,9 +133,10 @@ namespace SingleResponsibilityPrinciple
             string datadirConnectString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\tradedatabase.mdf;Integrated Security=True;Connect Timeout=30;";
             // This users the Azure connection string
             string azureConnectString = @"Data Source=cis3115-server.database.windows.net;Initial Catalog=CIS3115;User ID=cis3115;Password=Saints4SQL;Connect Timeout=60;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
-           
+            string myConnectiionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\jdkay\Documents\tradedatabase.mdf;Integrated Security=True;Connect Timeout=30";
+
             // Change the connection string used to match the one you want
-            using (var connection = new SqlConnection(genericConnectString))
+            using (var connection = new SqlConnection(myConnectiionString))
             {
                 LogMessage("INFO:Going to open database connection");
                 connection.Open();
