@@ -12,7 +12,7 @@ namespace SingleResponsibilityPrinciple
         /// </summary>
         /// <param name="stream"> File must be passed in as a Stream. </param>
         /// <returns> Returns a list of strings, one for each string for each line in the file </returns>
-        private IEnumerable<string> ReadTradeData(Stream stream)
+        public IEnumerable<string> ReadTradeData(Stream stream)
         {
             // read rows
             List<string> lines = new List<string>();
@@ -21,12 +21,13 @@ namespace SingleResponsibilityPrinciple
                 string line;
                 while ((line = reader.ReadLine()) != null)
                 {
-                    // Remove BOM character if present at the start of the first line
-                    if (lines.Count == 0 && line.StartsWith("﻿"))
+                    // Trim whitespace and ignore empty lines
+                    line = line.Trim();
+                    if (!string.IsNullOrWhiteSpace(line))
                     {
-                        line = line.Substring(1);
+                        // Add the cleaned line to the list
+                        lines.Add(line);
                     }
-                    lines.Add(line);
                 }
             }
             return lines;
